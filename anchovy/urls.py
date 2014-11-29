@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('users.urls')),
+    url(r'^wish/', include('wish.urls')),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^account/', include('django.contrib.auth.urls', namespace='auth')),
 
