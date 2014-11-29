@@ -2,6 +2,16 @@
 {% block main %}
 {% include 'users/profile.html' %}
 
-list jj
+<div>
+    <h2>Wish Lists</h2>
+    {% if items %}
+    <ol>
+        {% for item in items %}
+        <li><a href="{{ item.link }}" target="_blank">{{ item.name }}</a></li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+
+</div>
 
 {% endblock %}
