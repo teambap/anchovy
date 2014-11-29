@@ -1,15 +1,14 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-class User(models.Model):
-    user_id = models.CharField(max_length=20)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=50)
-
-
-class Kakao(User):
-    kakao_id = models.CharField(max_length=30)
-    nickname = models.CharField(max_length=30)
-    profile_image = models.CharField(max_length=100)
-    thumbnail_image = models.CharField(max_length=100)
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+    # email = models.EmailField(
+    #     verbose_name='email address',
+    #     max_length=255,
+    #     unique=True,
+    # )
+    profile_image_url = models.CharField(max_length=250, blank=True, null=True)
+    # REQUIRED_FIELDS = ['profile_image_url']
+    # USERNAME_FIELD = 'email'
 

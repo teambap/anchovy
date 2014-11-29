@@ -2,38 +2,25 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name='Profile',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
-                ('user_id', models.CharField(max_length=20)),
-                ('first_name', models.CharField(max_length=30)),
-                ('last_name', models.CharField(max_length=30)),
-                ('email', models.CharField(max_length=50)),
+                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('profile_image_url', models.CharField(blank=True, max_length=250, null=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Kakao',
-            fields=[
-                ('user_ptr', models.OneToOneField(serialize=False, primary_key=True, to='users.User', auto_created=True, parent_link=True)),
-                ('kakao_id', models.CharField(max_length=30)),
-                ('nickname', models.CharField(max_length=30)),
-                ('profile_image', models.CharField(max_length=100)),
-                ('thumbnail_image', models.CharField(max_length=100)),
-            ],
-            options={
-            },
-            bases=('users.user',),
         ),
     ]
