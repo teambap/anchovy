@@ -1,7 +1,13 @@
 import datetime
+from django import forms
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from wish.models import Item
+
+
+class ItemForm(forms.Form):
+    name = forms.CharField()
+    link = forms.CharField()
 
 
 def list(request):
@@ -22,21 +28,28 @@ def list(request):
 
 def add(request):
 
-    print("add called")
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
 
-    item = None
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            link = form.cleaned_data['link']
 
-    if request.user != None:
-        user_id = request.user.id
-        item = Item()
-        item.user_id = user_id
-        item.link = 'http://www.nikestore.co.kr/goods/showGoodsDetailCache.lecs?goodsNo=NK31041887&colorOptionValueCode=698902-003'
-        item.name = '에어맥스 2015'
-        item.status = 'W'
-        item.created = datetime.datetime.today()
-        item.modified = datetime.datetime.today()
+            if request.user != None:
+                user_id = request.user.id
+                item = Item()
+                item.user_id = user_id
+                item.link = link
+                item.name = name
+                item.status = 'W'
+                item.created = datetime.datetime.today()
+                item.modified = datetime.datetime.today()
 
-    if item != None:
-        item.save()
+            if item != None:
+                item.save()
 
-    return redirect('list')
+        return redirect('list')
+
+    else:
+        form = ItemForm()
+        return render(request, 'wish/add.html', {'form':form})
