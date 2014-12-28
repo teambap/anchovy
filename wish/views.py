@@ -113,3 +113,39 @@ def add(request):
         result['desc'] = 'Bad Request'
 
     return JSONResponse(result)
+
+
+
+@csrf_exempt
+def remove(request):
+    result = {}
+    result['code'] = '200'
+    result['desc'] = 'OK'
+
+    if not request.user.is_authenticated():
+        result['code'] = '401'
+        result['desc'] = 'Authorize Error'
+        return result
+
+    if request.method == 'POST':
+        user = request.user
+
+        id = request.POST.get('id')
+
+        if id == None:
+            result['code'] = '400'
+            result['desc'] = 'Bad Request'
+
+        item = Item.objects.filter(user_id=user.id).filter(id=id)
+        if item.exists():
+            item.delete()
+        else:
+            result['code'] = '404'
+            result['desc'] = 'Not Found'
+
+    else:
+        result['code'] = '400'
+        result['desc'] = 'Bad Request'
+
+
+    return JSONResponse(result)

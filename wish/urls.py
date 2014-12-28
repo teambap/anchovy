@@ -6,5 +6,5 @@ urlpatterns = patterns('',
     url(r'^list.json$', views.list_json),
     url(r'^add$', views.add_form),
     url(r'^add.json$', views.add),
-
+    url(r'^remove.json$', views.remove),
 )

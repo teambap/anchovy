@@ -15,4 +15,14 @@
 
 </div>
 
+    <div>
+    <h2>Wish Add</h2>
+    <form action="remove.json" method="POST">
+        {% csrf_token %}
+        <input type="text" name="id" />
+        <input type="submit" value="Submit" />
+    </form>
+
+</div>
+
 {% endblock %}
