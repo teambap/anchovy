@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from wish.models import Item
 from wish.serializers import ItemSerializer
+from django.utils import timezone
 
 class ItemForm(forms.Form):
     name = forms.CharField()
@@ -40,6 +41,10 @@ def list(request):
                              context_instance=context)
 
 def list_json(request):
+
+    print(timezone.get_current_timezone())
+    print(timezone.now())
+
     items = []
     user_id = None
 
@@ -99,8 +104,13 @@ def add(request):
             item.link = link
             item.name = name
             item.status = 'W'
-            item.created = datetime.datetime.today()
-            item.modified = datetime.datetime.today()
+            # item.created = datetime.datetime.now()
+            # item.modified = datetime.datetime.now()
+            item.created = timezone.now()
+            item.modified = timezone.now()
+
+            print(datetime.datetime.now())
+            print(timezone.now())
 
             item.save()
 
