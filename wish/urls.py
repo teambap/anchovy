@@ -3,6 +3,8 @@ from wish import views
 
 urlpatterns = patterns('',
     url(r'^list$', views.list, name='list'),
-    url(r'^add$', views.add, name='add'),
+    url(r'^list.json$', views.list_json),
+    url(r'^add$', views.add_form),
+    url(r'^add.json$', views.add),
 
 )

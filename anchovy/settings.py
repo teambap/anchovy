@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'wish',
     'users',
     'social.apps.django_app.default',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -126,3 +127,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
 )
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

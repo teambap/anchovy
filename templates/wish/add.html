@@ -4,7 +4,7 @@
 
 <div>
     <h2>Wish Add</h2>
-    <form action="add" method="POST">
+    <form action="add.json" method="POST">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit" />
