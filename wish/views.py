@@ -20,6 +20,7 @@ class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
     """
+    # http://abipictures.tistory.com/915
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
@@ -41,9 +42,6 @@ def list(request):
                              context_instance=context)
 
 def list_json(request):
-
-    print(timezone.get_current_timezone())
-    print(timezone.now())
 
     items = []
     user_id = None
@@ -104,13 +102,8 @@ def add(request):
             item.link = link
             item.name = name
             item.status = 'W'
-            # item.created = datetime.datetime.now()
-            # item.modified = datetime.datetime.now()
-            item.created = timezone.now()
-            item.modified = timezone.now()
-
-            print(datetime.datetime.now())
-            print(timezone.now())
+            item.created = timezone.localtime(timezone.now())
+            item.modified = timezone.localtime(timezone.now())
 
             item.save()
 
