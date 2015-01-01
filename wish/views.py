@@ -26,6 +26,8 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json; charset=UTF-8'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+
+
 def list(request):
 
     items = []
@@ -51,11 +53,11 @@ def list_json(request):
     result['desc'] = "OK"
 
     to = request.GET.get('to', 1)
-    length = request.GET.get('length', 3)
+    length = request.GET.get('length', 20)
 
     if request.user.is_authenticated():
         user_id = request.user.id
-        item_list = Item.objects.filter(user_id=user_id)
+        item_list = Item.objects.filter(user_id=user_id).order_by('-created')
 
         paginator = Paginator(item_list, length)
         items = paginator.page(to)
@@ -90,26 +92,27 @@ def add(request):
 
 
     if request.method == 'POST':
-        form = ItemForm(request.POST)
+        # form = ItemForm(request.POST)
 
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            link = form.cleaned_data['link']
+        # if form.is_valid():
+        name = request.POST.get('name')
+        link = request.POST.get('link')
 
-            user_id = request.user.id
-            item = Item()
-            item.user_id = user_id
-            item.link = link
-            item.name = name
-            item.status = 'W'
-            item.created = timezone.localtime(timezone.now())
-            item.modified = timezone.localtime(timezone.now())
-
-            item.save()
-
-        else:
+        if name == None or link == None:
             result['code'] = '400'
             result['desc'] = 'Bad Request'
+            return JSONResponse(result)
+
+        user_id = request.user.id
+        item = Item()
+        item.user_id = user_id
+        item.link = link
+        item.name = name
+        item.status = 'W'
+        item.created = timezone.localtime(timezone.now())
+        item.modified = timezone.localtime(timezone.now())
+
+        item.save()
 
     else:
         result['code'] = '400'
