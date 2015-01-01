@@ -123,7 +123,7 @@ def add(request):
 
 
 @csrf_exempt
-def remove(request, item_id):
+def delete(request, item_id):
     result = {}
     result['code'] = '200'
     result['desc'] = 'OK'
