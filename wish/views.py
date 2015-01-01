@@ -23,7 +23,7 @@ class JSONResponse(HttpResponse):
     # http://abipictures.tistory.com/915
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
+        kwargs['content_type'] = 'application/json; charset=UTF-8'
         super(JSONResponse, self).__init__(content, **kwargs)
 
 def list(request):
