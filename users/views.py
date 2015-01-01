@@ -2,6 +2,8 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import loader, RequestContext
+from django.contrib.auth import logout as auth_logout
+
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -99,4 +101,16 @@ def home(request):
     return render_to_response('users/home.html',
                              context_instance=context)
 
+def logout(request):
 
+    result = {}
+    result['code'] = "200"
+    result['desc'] = "OK"
+
+    if request.user.is_authenticated():
+        auth_logout(request)
+    else:
+        result['code'] = '401'
+        result['desc'] = 'Authorize Error'
+
+    return JSONResponse(result)
