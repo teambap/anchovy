@@ -106,9 +106,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/wwish/'
 
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'anchovy-ui/dist')]
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'anchovy-ui/dist')]
+
+
 
 LOGIN_REDIRECT_URL = '/'
 
