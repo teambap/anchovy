@@ -120,25 +120,20 @@ def add(request):
 
 
 @csrf_exempt
-def remove(request):
+def remove(request, item_id):
     result = {}
     result['code'] = '200'
     result['desc'] = 'OK'
 
-    if not request.user.is_authenticated():
-        result['code'] = '401'
-        result['desc'] = 'Authorize Error'
-        return result
+    if request.user.is_authenticated():
 
-    if request.method == 'POST':
-        user = request.user
-
-        id = request.POST.get('id')
+        id = item_id
 
         if id == None:
             result['code'] = '400'
             result['desc'] = 'Bad Request'
 
+        user = request.user
         item = Item.objects.filter(user_id=user.id).filter(id=id)
         if item.exists():
             item.delete()
@@ -147,8 +142,8 @@ def remove(request):
             result['desc'] = 'Not Found'
 
     else:
-        result['code'] = '400'
-        result['desc'] = 'Bad Request'
+        result['code'] = '401'
+        result['desc'] = 'Authorize Error'
 
 
     return JSONResponse(result)
