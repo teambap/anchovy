@@ -10,7 +10,19 @@ from django.views.decorators.csrf import csrf_exempt
 #     last_name = forms.CharField(label='Last Name', max_length=30)
 #     email = forms.CharField(label='email', max_length=40)
 #     user_id = forms.CharField(label='Id', max_length=30)
+from rest_framework.renderers import JSONRenderer
+from users.serializers import ProfileSerializer
 
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    # http://abipictures.tistory.com/915
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json; charset=UTF-8'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 def index(request):
     template = loader.get_template('users/index.html')
@@ -21,7 +33,27 @@ def index(request):
 
 
 def info(request):
-    return HttpResponse('Hello, world. ')
+
+    result = {}
+    result['code'] = "200"
+    result['desc'] = "OK"
+
+    if request.user.is_authenticated():
+        user = request.user
+        profile = user.profile
+        print("image:%s" % (profile.profile_image_url))
+
+        serializer = ProfileSerializer(profile)
+
+        data = {}
+        data['profile'] = serializer.data
+
+        result['data'] = data
+    else:
+        result['code'] = '401'
+        result['desc'] = 'Authorize Error'
+
+    return JSONResponse(result)
 
 # @csrf_exempt
 # def add(request):
@@ -59,9 +91,12 @@ def home(request):
             profile = user.profile
             print("image:%s" % (profile.profile_image_url))
 
+            # return HttpResponseRedirect('/wwish/index.html')
+
     context = RequestContext(request,
                            {'request':request,
                             'user': request.user})
     return render_to_response('users/home.html',
                              context_instance=context)
+
 
